@@ -1,27 +1,25 @@
 import requests
-import pytest
+import uuid
 from config import BASE_URL, HEADERS
 
 
-@pytest.fixture
-def unique_project_name():
-    import uuid
+def generate_unique_name():
     return f"Test Project {uuid.uuid4()}"
 
 
-def test_create_project_positive(unique_project_name):
+def test_create_project_positive():
+    name = generate_unique_name()
     response = requests.post(
         f"{BASE_URL}/projects",
         headers=HEADERS,
-        json={"name": unique_project_name}
+        json={"name": name}
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["name"] == unique_project_name
+    assert data["name"] == name
 
 
 def test_get_project_positive():
-    # Сначала создаём проект
     create_resp = requests.post(
         f"{BASE_URL}/projects",
         headers=HEADERS,
@@ -30,7 +28,6 @@ def test_get_project_positive():
     assert create_resp.status_code == 200
     project_id = create_resp.json()["id"]
 
-    # Получаем проект по ID
     get_resp = requests.get(
         f"{BASE_URL}/projects/{project_id}",
         headers=HEADERS
@@ -40,7 +37,6 @@ def test_get_project_positive():
 
 
 def test_update_project_positive():
-    # Создаём проект
     create_resp = requests.post(
         f"{BASE_URL}/projects",
         headers=HEADERS,
@@ -49,7 +45,6 @@ def test_update_project_positive():
     assert create_resp.status_code == 200
     project_id = create_resp.json()["id"]
 
-    # Обновляем имя проекта
     update_resp = requests.put(
         f"{BASE_URL}/projects/{project_id}",
         headers=HEADERS,
@@ -63,7 +58,7 @@ def test_create_project_without_name():
     response = requests.post(
         f"{BASE_URL}/projects",
         headers=HEADERS,
-        json={}  # пропущено обязательное поле
+        json={}
     )
     assert response.status_code == 400
 
