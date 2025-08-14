@@ -1,7 +1,9 @@
-# config.py
-BASE_URL = "https://yougile.ru/api-v2"
-AUTH_TOKEN = "Bearer <your_token>"
+BASE_URL = "https://api.yougile.ru/api-v2"
+
 HEADERS = {
-    "Authorization": AUTH_TOKEN,
-    "Content-Type": "application/json"
+    "Authorization": (
+        "Bearer SGj5LphP+EVU+wAVELdifadmnblNAXG5Y4hSXKq4U3QC9bh4bigwhNDq9"
+        "EDwDRsQ"
+    ),
+    "Content-Type": "application/json",
 }
